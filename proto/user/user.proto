@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package com.cinema.srv.user;
+
+import "common.proto";
+
+service UserService {
+    // 创建一个用户
+    rpc CreateUser (User) returns (Response) {
+    }
+    // 通过id获取用户
+    rpc UserLogin (LoginRequest) returns (Token) {
+    }
+    // 用户认证
+    rpc AuthUser (Token) returns (Response) {
+    }
+}
+
+message User {
+    int64 id = 1;
+    string nickname = 2;
+    string name = 3;
+    string password = 4;
+    string phone = 5;
+    string email = 6;
+    string birthday = 7;
+}
+
+message LoginRequest {
+    string name = 1;
+    string password = 2;
+}
+
+// 登陆成功后返回一个token
+message Token {
+    string token = 1;
+}

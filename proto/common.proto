@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+// 通用的响应
+message Response {
+    string msg=1;
+    int32 code=2;
+}
