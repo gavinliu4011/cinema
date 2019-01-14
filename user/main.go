@@ -1,12 +1,11 @@
 package main
 
 import (
+	"cinema/user/handler"
+	pb "cinema/user/pb/user"
+	"cinema/user/wrapper"
 	"github.com/micro/go-log"
 	"github.com/micro/go-micro"
-	"cinema/user/handler"
-	"cinema/user/subscriber"
-
-	example "cinema/user/proto/example"
 )
 
 func main() {
@@ -14,19 +13,25 @@ func main() {
 	service := micro.NewService(
 		micro.Name("com.cinema.srv.user"),
 		micro.Version("latest"),
+		micro.WrapHandler(wrapper.HandlerWrapper),
+		micro.WrapClient(wrapper.LogClientWrap),
+		micro.WrapCall(wrapper.CallFuncWrap),
+		//micro.WrapHandler(ratelimit.NewHandlerWrapper(&rate.Bucket{}, false)),
 	)
 
 	// Initialise service
 	service.Init()
 
 	// Register Handler
-	example.RegisterExampleHandler(service.Server(), new(handler.Example))
-
+	err := pb.RegisterUserServiceHandler(service.Server(), new(handler.UserHandler))
+	if err != nil {
+		log.Fatalf("register user handler error: %v", err)
+	}
 	// Register Struct as Subscriber
-	micro.RegisterSubscriber("com.cinema.srv.user", service.Server(), new(subscriber.Example))
+	//micro.RegisterSubscriber("com.cinema.srv.user", service.Server(), new(subscriber.Example))
 
 	// Register Function as Subscriber
-	micro.RegisterSubscriber("com.cinema.srv.user", service.Server(), subscriber.Handler)
+	//micro.RegisterSubscriber("com.cinema.srv.user", service.Server(), subscriber.Handler)
 
 	// Run service
 	if err := service.Run(); err != nil {
