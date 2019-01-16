@@ -15,9 +15,9 @@ type Claims struct {
 }
 
 // 创建token
-func GenerateToken(nickname string) (string, error) {
+func GenerateToken(nickname string, expiration time.Duration) (string, error) {
 	nowTime := time.Now()
-	expireTime := nowTime.Add(time.Hour * 24 * 3)
+	expireTime := nowTime.Add(expiration)
 	claims := Claims{
 		nickname,
 		jwt.StandardClaims{

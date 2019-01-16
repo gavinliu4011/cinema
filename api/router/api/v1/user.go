@@ -6,8 +6,8 @@ import (
 	proto "cinema/api/proto/user"
 	"cinema/api/util"
 	"context"
-	"fmt"
 	"github.com/gin-gonic/gin"
+	"log"
 	"time"
 )
 
@@ -24,22 +24,28 @@ func RegistryUser(c *gin.Context) {
 		Password: password,
 		Nickname: nickname,
 	}
-	_, err := us.CreateUser(context.Background(), user)
+	resp, err := us.CreateUser(context.Background(), user)
 	if err != nil {
+		log.Println(err)
 		c.JSON(500, gin.H{
-			"message": "fail",
+			"message": "error",
 			"code":    -1,
 		})
 		return
 	}
-	c.JSON(200, gin.H{
-		"message": "success",
-		"code":    0,
-	})
+	result := gin.H{}
+	if resp.Success {
+		result["message"] = "success"
+		result["code"] = 0
+	} else {
+		result["message"] = resp.Msg
+		result["code"] = -1
+	}
+	c.JSON(200, result)
 }
 
 func UserLogin(c *gin.Context) {
-	name := c.PostForm("name")
+	name := c.PostForm("username")
 	password := c.PostForm("password")
 	resp, err := us.UserLogin(context.Background(), &proto.LoginRequest{
 		Username: name,
@@ -49,17 +55,10 @@ func UserLogin(c *gin.Context) {
 		c.JSON(500, gin.H{"message": "fail"})
 		return
 	}
-	token, err := util.GenerateToken(resp.Nickname)
-	if err != nil {
-		// 重试
-		if token, err = util.GenerateToken(resp.Nickname); err != nil {
-			panic("generate token error")
-		}
-	}
+	expiration := time.Hour * 24 * 3
+	token, err := util.GenerateToken(resp.Nickname, expiration)
 	// 设置缓存
-	caech.Redis.Set(token, resp.UserId, time.Hour*24*3)
-	caech.Redis.Del()
-	fmt.Println(resp)
+	caech.Redis.Set(token, resp.UserId, expiration)
 	c.JSON(200, gin.H{"token": token})
 
 }

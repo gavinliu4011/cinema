@@ -113,20 +113,16 @@ require (
 	github.com/jeffchao/backoff v0.0.0-20140404060208-9d7fd7aa17f2 // indirect
 	github.com/jefferai/jsonx v0.0.0-20160721235117-9cc31c3135ee // indirect
 	github.com/jonboulle/clockwork v0.1.0 // indirect
-	github.com/juju/ratelimit v1.0.1 // indirect
 	github.com/keybase/go-crypto v0.0.0-20181127160227-255a5089e85a // indirect
 	github.com/lib/pq v1.0.0 // indirect
 	github.com/lyft/protoc-gen-validate v0.0.12 // indirect
 	github.com/mattbaird/elastigo v0.0.0-20170123220020-2fe47fd29e4b // indirect
 	github.com/michaelklishin/rabbit-hole v1.4.0 // indirect
 	github.com/micro/cli v0.0.0-20181223203424-1b0c9793c300 // indirect
-	github.com/micro/examples v0.0.0-20190110221351-e99ca21771ca
-	github.com/micro/go-api v0.5.0
 	github.com/micro/go-log v0.0.0-20170512141327-cbfa9447f9b6
 	github.com/micro/go-micro v0.17.0
-	github.com/micro/go-plugins v0.18.0 // indirect
 	github.com/micro/go-rcache v0.0.0-20180418165751-a581a57b5133 // indirect
-	github.com/micro/go-web v0.5.2 // indirect
+	github.com/micro/go-web v0.5.2
 	github.com/micro/h2c v1.0.0 // indirect
 	github.com/micro/mdns v0.0.0-20181201230301-9c3770d4057a // indirect
 	github.com/micro/util v0.0.0-20181115195001-2d4f591dc538 // indirect
@@ -171,6 +167,7 @@ require (
 	go.uber.org/zap v1.9.1 // indirect
 	golang.org/x/crypto v0.0.0-20180820150726-614d502a4dac
 	gopkg.in/asn1-ber.v1 v1.0.0-20181015200546-f715ec2f112d // indirect
+	gopkg.in/go-playground/assert.v1 v1.2.1 // indirect
 	gopkg.in/go-playground/validator.v8 v8.18.2 // indirect
 	gopkg.in/gorethink/gorethink.v4 v4.1.0 // indirect
 	gopkg.in/mgo.v2 v2.0.0-20180705113604-9856a29383ce // indirect

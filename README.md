@@ -11,7 +11,7 @@ todo:图片
 目录结构：
 - **movie** - 电影管理系统
 - **proto** - `grpc` 协议文件目录
-- **ticketing** - 电影票管理系统
+- **projection** - 电影票管理系统
 - **user** - 用户管理系统
 
 # 特性

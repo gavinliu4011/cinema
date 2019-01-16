@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"cinema/user/db"
+	"cinema/user/module"
 	pb "cinema/user/pb/user"
 	"cinema/user/util"
 	"context"
@@ -11,16 +11,26 @@ import (
 )
 
 type UserHandler struct {
-	pb.User
 }
 
+// 创建一个用户
 func (u *UserHandler) CreateUser(ctx context.Context, user *pb.User, resp *pb.Response) error {
 	hashPwd, err := util.GeneratePassword(user.Password, 1)
 	if err != nil {
 		return fmt.Errorf("generate password error: %v", err)
 	}
+	coll := module.DB.Collection("user")
+	doc := bsonx.Doc{}
+	_ = coll.FindOne(context.Background(), bson.M{"username": user.Username}).Decode(&doc)
+	if len(doc) != 0 {
+		resp.Success = false
+		resp.Msg = "用户已存在"
+		return nil
+	}
+
 	user.Password = hashPwd
-	_, err = db.DB.Collection("user").InsertOne(context.Background(), &user)
+	_, err = coll.InsertOne(context.Background(), &user)
+	module.DB.Collection("")
 	if err != nil {
 		return err
 	}
@@ -29,13 +39,17 @@ func (u *UserHandler) CreateUser(ctx context.Context, user *pb.User, resp *pb.Re
 	return nil
 }
 
+// 用户登陆
 func (u *UserHandler) UserLogin(ctx context.Context, req *pb.LoginRequest, user *pb.LoginResponse) error {
 	doc := bsonx.Doc{}
-	db.DB.Collection().Clone()
-	err := db.DB.Collection("user").FindOne(context.Background(),
+	err := module.DB.Collection("user").FindOne(context.Background(),
 		bson.D{{"username", req.Username}}).Decode(&doc)
 	if err != nil {
-		fmt.Println(err)
+		return err
+	}
+	validate := util.ValidatePassword(doc.Lookup("password").String(), req.Password)
+	if !validate {
+		return fmt.Errorf("密码错误")
 	}
 	user.UserId = doc.Lookup("_id").ObjectID().Hex()
 	user.Nickname = doc.Lookup("nickname").StringValue()

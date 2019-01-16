@@ -1,4 +1,4 @@
-package db
+package module
 
 import (
 	"context"
@@ -15,5 +15,9 @@ func init() {
 	if err != nil {
 		log.Fatalf("connect mongo error: %v", err)
 	}
-	DB = client.Database("cinema_user")
+	DB = client.Database("cinema_projection")
+	err = client.Ping(context.Background(), nil)
+	if err != nil {
+		log.Fatalf("ping mongo error: %v", err)
+	}
 }

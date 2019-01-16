@@ -1,11 +1,11 @@
-# Ticketing Service
+# projection Service
 
-This is the Ticketing service
+This is the projection service
 
 Generated with
 
 ```
-micro new cinema/ticketing --namespace=com.cinema --type=srv
+micro new cinema/projection --namespace=com.cinema --type=srv
 ```
 
 ## Getting Started
@@ -16,9 +16,9 @@ micro new cinema/ticketing --namespace=com.cinema --type=srv
 
 ## Configuration
 
-- FQDN: com.cinema.srv.ticketing
+- FQDN: com.cinema.srv.projection
 - Type: srv
-- Alias: ticketing
+- Alias: projection
 
 ## Dependencies
 
@@ -44,7 +44,7 @@ make build
 
 Run the service
 ```
-./ticketing-srv
+./projection-srv
 ```
 
 Build a docker image
