@@ -5,9 +5,18 @@ import (
 	pb "cinema/user/pb/user"
 	"cinema/user/util"
 	"context"
+	"encoding/json"
 	"fmt"
+	"github.com/getsentry/raven-go"
+	"github.com/micro/go-micro/broker"
 	"github.com/mongodb/mongo-go-driver/bson"
+	"github.com/mongodb/mongo-go-driver/bson/primitive"
 	"github.com/mongodb/mongo-go-driver/x/bsonx"
+)
+
+const (
+	userCreateTopic = "com.cinema.srv.user.created"
+	userLoginTopic  = "com.cinema.srv.user.login"
 )
 
 type UserHandler struct {
@@ -17,6 +26,7 @@ type UserHandler struct {
 func (u *UserHandler) CreateUser(ctx context.Context, user *pb.User, resp *pb.Response) error {
 	hashPwd, err := util.GeneratePassword(user.Password, 1)
 	if err != nil {
+		raven.CaptureError(err, nil)
 		return fmt.Errorf("generate password error: %v", err)
 	}
 	coll := module.DB.Collection("user")
@@ -29,13 +39,24 @@ func (u *UserHandler) CreateUser(ctx context.Context, user *pb.User, resp *pb.Re
 	}
 
 	user.Password = hashPwd
-	_, err = coll.InsertOne(context.Background(), &user)
+	result, err := coll.InsertOne(context.Background(), &user)
 	module.DB.Collection("")
 	if err != nil {
 		return err
 	}
 	resp.Success = true
 	resp.Msg = "success"
+
+	id, _ := result.InsertedID.(primitive.ObjectID)
+	b, _ := json.Marshal(user)
+	msg := broker.Message{
+		Header: map[string]string{"userId": id.Hex()},
+		Body:   []byte(b),
+	}
+	err = broker.Publish(userCreateTopic, &msg)
+	if err != nil {
+		raven.CaptureError(err, nil)
+	}
 	return nil
 }
 
@@ -51,11 +72,21 @@ func (u *UserHandler) UserLogin(ctx context.Context, req *pb.LoginRequest, user 
 	if !validate {
 		return fmt.Errorf("密码错误")
 	}
-	user.UserId = doc.Lookup("_id").ObjectID().Hex()
+	userId := doc.Lookup("_id").ObjectID().Hex()
+	user.UserId = userId
 	user.Nickname = doc.Lookup("nickname").StringValue()
 	user.Username = doc.Lookup("username").StringValue()
 	user.Phone = doc.Lookup("phone").StringValue()
 	i, _ := doc.Lookup("birthday").Int64OK()
 	user.Birthday = i
+	b, _ := json.Marshal(&user)
+	msg := broker.Message{
+		Header: map[string]string{"userId": userId},
+		Body:   []byte(b),
+	}
+	err = broker.Publish(userLoginTopic, &msg)
+	if err != nil {
+		raven.CaptureError(err, nil)
+	}
 	return nil
 }

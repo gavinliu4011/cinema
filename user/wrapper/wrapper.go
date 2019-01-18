@@ -11,7 +11,7 @@ import (
 // handler 包装
 func HandlerWrapper(fn server.HandlerFunc) server.HandlerFunc {
 	return func(ctx context.Context, req server.Request, rsp interface{}) error {
-		fmt.Printf("[HandlerWrapper] [%v] server request: %s\n", time.Now(), req.Method())
+		fmt.Printf("[HandlerWrapper] [%v] server request: %s\n", time.Now())
 		return fn(ctx, req, rsp)
 	}
 }
@@ -21,7 +21,7 @@ type clientWrapper struct {
 }
 
 func (c *clientWrapper) Call(ctx context.Context, req client.Request, rsp interface{}, opts ...client.CallOption) error {
-	fmt.Printf("[wrapper] client request to service: %s method: %s\n", req.Service(), req.Method())
+	fmt.Printf("[wrapper] client request to service: %s method: %s\n", req.Service())
 	return c.Client.Call(ctx, req, rsp)
 }
 
