@@ -1,33 +1,36 @@
 package main
 
 import (
-	"github.com/micro/go-log"
-
-	"github.com/micro/go-micro"
-	"cinema/api/handler"
-	"cinema/api/client"
-
-	example "cinema/api/proto/example"
+	"cinema/api/router"
+	"github.com/micro/go-web"
+	"log"
+	"net/http"
+	"time"
 )
 
 func main() {
-	// New Service
-	service := micro.NewService(
-		micro.Name("com.cinema.api.api"),
-		micro.Version("latest"),
+	// 创建 micro 服务
+	service := web.NewService(
+		web.Name("go.micro.api.greeter"),
 	)
+	_ = service.Init()
+	// 创建 gin 路由
+	r := router.Router()
+	s := http.Server{
+		Addr:           ":8080",
+		Handler:        r,
+		ReadTimeout:    time.Second * 30,
+		WriteTimeout:   time.Second * 30,
+		MaxHeaderBytes: 1 << 20,
+	}
 
-	// Initialise service
-	service.Init(
-		// create wrap for the Example srv client
-		micro.WrapHandler(client.ExampleWrapper(service)),
-	)
+	// 用 gin 注册go-micro handler
+	service.Handle("/", r)
 
-	// Register Handler
-	example.RegisterExampleHandler(service.Server(), new(handler.Example))
-
-	// Run service
+	if err := s.ListenAndServe(); err != nil {
+		log.Fatalf("run gin error: %s", err)
+	}
 	if err := service.Run(); err != nil {
-		log.Fatal(err)
+		log.Fatalf("run go-micro error: %s", err)
 	}
 }

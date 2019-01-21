@@ -1,3 +1,4 @@
 FROM alpine
-ADD user-srv /user-srv
-ENTRYPOINT [ "/user-srv" ]
+COPY user-srv /app
+#ENTRYPOINT [ "/user-srv" ]
+CMD ["/app/user-srv"]

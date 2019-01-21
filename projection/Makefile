@@ -9,7 +9,7 @@ proto:
 .PHONY: build
 build: proto
 
-	go build -o ticketing-srv main.go plugin.go
+	go build -o projection-srv main.go plugin.go
 
 .PHONY: test
 test:
@@ -17,4 +17,4 @@ test:
 
 .PHONY: docker
 docker:
-	docker build . -t ticketing-srv:latest
+	docker build . -t projection-srv:latest

@@ -1,0 +1,46 @@
+version: "3"
+
+services:
+
+
+  redis:
+    image: redis
+    container_name: cinema-redis
+    ports:
+      - 6379:6379
+    volumes:
+      - ~/redis/data:/data
+
+# 服务注册/发现
+  consul:
+    image: consul
+    container_name: cniema-consul
+    ports:
+      - 8500:8500
+      - 8300:8300
+
+  mongo:
+    image: mongo
+    container_name: cinema-mongo
+    ports:
+      - 27017:27017
+
+  zookeeper:
+    image: zookeeper
+    container_name: cinema-zookeeper
+    ports:
+      - 2181:2181
+
+#  kafka 消息队列
+  kafka:
+    image: wurstmeister/kafka
+    container_name: cinema-kafka
+    ports:
+      - 9092:9092
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: 127.0.0.1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+#    volumes:
+#      - /var/run/docker.sock:/var/run/docker.sock

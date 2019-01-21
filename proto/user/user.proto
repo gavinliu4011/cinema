@@ -2,36 +2,50 @@ syntax = "proto3";
 
 package com.cinema.srv.user;
 
-import "common.proto";
 
 service UserService {
     // 创建一个用户
     rpc CreateUser (User) returns (Response) {
     }
-    // 通过id获取用户
-    rpc UserLogin (LoginRequest) returns (Token) {
+    // 用户登录
+    rpc UserLogin (LoginRequest) returns (LoginResponse) {
     }
-    // 用户认证
-    rpc AuthUser (Token) returns (Response) {
-    }
+
 }
 
 message User {
-    int64 id = 1;
-    string nickname = 2;
-    string name = 3;
-    string password = 4;
-    string phone = 5;
-    string email = 6;
-    string birthday = 7;
+    string nickname = 1;
+    string username = 2;
+    string password = 3;
+    string phone = 4;
+    string email = 5;
+    int64 birthday = 6; // 时间戳
 }
 
 message LoginRequest {
-    string name = 1;
+    string username = 1;
     string password = 2;
 }
 
-// 登陆成功后返回一个token
-message Token {
-    string token = 1;
+message LoginResponse {
+    string userId = 1;
+    string username = 2;
+    string phone = 3;
+    string email = 4;
+    int64 birthday = 5;
+    string nickname = 6;
+}
+
+
+// 返回用户id
+message ResponseUserId {
+    string userId = 1;
+}
+
+message Response {
+    // 响应是否成功
+    bool success = 1;
+    // 响应信息
+    string msg = 2;
+
 }
