@@ -14,6 +14,7 @@ require (
 	github.com/Shopify/sarama v1.20.1 // indirect
 	github.com/Shopify/toxiproxy v2.1.4+incompatible // indirect
 	github.com/StackExchange/wmi v0.0.0-20181212234831-e0a55b97c705 // indirect
+	github.com/alecthomas/template v0.0.0-20160405071501-a0175ee3bccc
 	github.com/aliyun/alibaba-cloud-sdk-go v0.0.0-20190110143916-f6b9dc4bf8db // indirect
 	github.com/araddon/gou v0.0.0-20190110011759-c797efecbb61 // indirect
 	github.com/armon/circbuf v0.0.0-20150827004946-bbbad097214e // indirect
@@ -64,6 +65,8 @@ require (
 	github.com/go-ldap/ldap v3.0.0+incompatible // indirect
 	github.com/go-log/log v0.1.0 // indirect
 	github.com/go-ole/go-ole v1.2.2 // indirect
+	github.com/go-openapi/jsonreference v0.18.0 // indirect
+	github.com/go-openapi/spec v0.18.0 // indirect
 	github.com/go-redis/redis v6.15.1+incompatible
 	github.com/go-sql-driver/mysql v1.4.1 // indirect
 	github.com/go-stack/stack v1.8.0 // indirect
@@ -129,8 +132,8 @@ require (
 	github.com/michaelklishin/rabbit-hole v1.4.0 // indirect
 	github.com/micro/cli v0.0.0-20181223203424-1b0c9793c300 // indirect
 	github.com/micro/go-log v0.0.0-20170512141327-cbfa9447f9b6
-	github.com/micro/go-micro v0.21.0
-	github.com/micro/go-plugins v0.20.0
+	github.com/micro/go-micro v0.17.0
+	github.com/micro/go-plugins v0.21.0
 	github.com/micro/go-rcache v0.0.0-20180418165751-a581a57b5133 // indirect
 	github.com/micro/go-web v0.5.2
 	github.com/micro/h2c v1.0.0 // indirect
@@ -165,6 +168,7 @@ require (
 	github.com/soheilhy/cmux v0.1.4 // indirect
 	github.com/streadway/amqp v0.0.0-20181205114330-a314942b2fd9 // indirect
 	github.com/stretchr/testify v1.3.0 // indirect
+	github.com/swaggo/swag v1.4.0
 	github.com/tidwall/pretty v0.0.0-20180105212114-65a9db5fad51 // indirect
 	github.com/tmc/grpc-websocket-proxy v0.0.0-20190109142713-0ad062ec5ee5 // indirect
 	github.com/tv42/httpunix v0.0.0-20150427012821-b75d8614f926 // indirect
@@ -177,6 +181,7 @@ require (
 	go.uber.org/multierr v1.1.0 // indirect
 	go.uber.org/zap v1.9.1 // indirect
 	golang.org/x/crypto v0.0.0-20180820150726-614d502a4dac
+	golang.org/x/tools v0.0.0-20190123021125-9279ec27fd88 // indirect
 	gopkg.in/asn1-ber.v1 v1.0.0-20181015200546-f715ec2f112d // indirect
 	gopkg.in/bsm/sarama-cluster.v2 v2.1.15 // indirect
 	gopkg.in/go-playground/assert.v1 v1.2.1 // indirect
@@ -187,6 +192,5 @@ require (
 	gopkg.in/square/go-jose.v2 v2.2.2 // indirect
 	gopkg.in/vmihailenco/msgpack.v2 v2.9.1 // indirect
 	gotest.tools v2.2.0+incompatible // indirect
-	layeh.com/radius v0.0.0-20190109000448-e6d9fd7a048a // indirect
-
+	layeh.com/radius v0.0.0-20190118135028-0f678f039617 // indirect
 )
