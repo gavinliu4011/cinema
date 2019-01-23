@@ -26,7 +26,6 @@ func main() {
 		micro.Version("latest"),
 		micro.WrapHandler(wrapper.HandlerWrapper),
 		micro.WrapClient(wrapper.LogClientWrap),
-		micro.WrapCall(wrapper.CallFuncWrap),
 		//micro.WrapHandler(ratelimit.NewHandlerWrapper(&rate.Bucket{}, false)),
 	)
 	// 必须提前初始化

@@ -1,4 +1,4 @@
 FROM alpine
-COPY user-srv /app
+COPY user /app/user
 #ENTRYPOINT [ "/user-srv" ]
-CMD ["/app/user-srv"]
+CMD ["/app/user"]
