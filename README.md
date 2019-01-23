@@ -1,7 +1,5 @@
 # Cinema - 电影院订票管理
 
-#概述
-
 使用 `go-micro` 开发的微服务电影院订票管理案例
 
 目录结构：
@@ -38,7 +36,9 @@ git clone https://github.com/zengxianxue/cinema.git
 cd cinema
 GO111MODULE=on go mod tidy 
 ```
-- build 
+- build
+
+目前只有`user`和`API`两个模块
 ```bash
 make build
 ```
