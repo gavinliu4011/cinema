@@ -3,6 +3,7 @@
 使用 `go-micro` 开发的微服务电影院订票管理案例
 
 目录结构：
+- **api** - RESTful API 接口，使用`gin`框架
 - **movie** - 电影管理服务
 - **proto** - `grpc` 协议文件目录
 - **projection** - 电影票管理服务
