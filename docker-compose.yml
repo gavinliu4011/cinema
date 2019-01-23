@@ -2,6 +2,44 @@ version: "3"
 
 services:
 
+  api-service:
+    build:
+      context: ./api
+    # 设置环境变量
+    environment:
+      REDIS_ADDRESS: redis:6379  # redis 缓存
+      MONGO_ADDRESS: mongodb://mongo:27017  # mongodb 数据库
+      MICRO_REGISTRY: consul  # 服务注册/发现插件
+      MICRO_REGISTRY_ADDRESS: consul:8500  # 服务注册地址
+      MICRO_SERVER_ADDRESS: :5000  # go-micro 服务地址，用于服务之间的调用
+    ports:
+      - 8080:8080  # 导出8080端口，Gin对外暴露端口
+      - 5001:5000  # 对外暴露服务地址，用于服务之间的调用
+    depends_on:
+      - redis
+      - consul
+      - kafka
+      - mongo
+
+  user-service:
+    build:
+      context: ./user
+    # 设置环境变量
+    environment:
+      REDIS_ADDRESS: redis:6379  # redis 缓存
+      MONGO_ADDRESS: mongodb://mongo:27017  # mongodb 数据库
+      MICRO_REGISTRY: consul  # 服务注册/发现插件
+      MICRO_REGISTRY_ADDRESS: consul:8500  # 服务注册地址
+      MICRO_SERVER_ADDRESS: :5000  # go-micro 服务地址，用于服务之间的调用
+      MICRO_BROKER: kafka  # 异步消息插件
+      MICRO_BROKER_ADDRESS: kafka:9092  # kafka 地址
+    ports:
+      - 5000:5000  # 对外暴露服务地址，用于服务之间的调用
+    depends_on:
+      - redis
+      - mongo
+      - consul
+      - kafka
 
   redis:
     image: redis
@@ -11,7 +49,7 @@ services:
     volumes:
       - ~/redis/data:/data
 
-# 服务注册/发现
+  # 服务注册/发现
   consul:
     image: consul
     container_name: cniema-consul
@@ -31,7 +69,7 @@ services:
     ports:
       - 2181:2181
 
-#  kafka 消息队列
+  #  kafka 消息队列
   kafka:
     image: wurstmeister/kafka
     container_name: cinema-kafka

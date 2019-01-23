@@ -29,10 +29,3 @@ func (c *clientWrapper) Call(ctx context.Context, req client.Request, rsp interf
 func LogClientWrap(c client.Client) client.Client {
 	return &clientWrapper{c}
 }
-
-func CallFuncWrap(callFunc client.CallFunc) client.CallFunc {
-	return func(ctx context.Context, address string, req client.Request, rsp interface{}, opts client.CallOptions) error {
-		fmt.Println("[wrapper] call func : ", ctx, address, req, rsp, opts)
-		return callFunc(ctx, address, req, rsp, opts)
-	}
-}

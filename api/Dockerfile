@@ -1,3 +1,3 @@
 FROM alpine
-ADD api-api /api-api
-ENTRYPOINT [ "/api-api" ]
+COPY api /app/api
+CMD [ "/app/api" ]
