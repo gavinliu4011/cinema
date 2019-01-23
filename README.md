@@ -25,7 +25,32 @@
 
 # 依赖
 - go1.11+
-- docker-compose
+- docker：[docker-ce](https://github.com/docker/docker-ce)
+- docker-compose：[下载地址](https://github.com/docker/compose/releases)
 
+# 运行
+- `clone`项目
+```bash
+git clone https://github.com/zengxianxue/cinema.git
+```
+- 安装依赖包
+```bash
+cd cinema
+GO111MODULE=on go mod tidy 
+```
+- build 
+```bash
+make build
+```
+- compose 启动
+```bash
+docker-compose up
+```
+- 测试
+```bash
+ curl -X POST -d "username=test&password=123456" http://localhost:8080/api/v1/user/registry
+```
+输出： `{"code":0,"message":"success"}`
 
-
+# 其他说明
+还在开发中... 欢迎 PR，喜欢加个星星哦，>_< 
