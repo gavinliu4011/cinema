@@ -3,10 +3,8 @@ package main
 import (
 	"github.com/micro/go-log"
 	"github.com/micro/go-micro"
-	"cinema/movie/handler"
-	"cinema/movie/subscriber"
-
-	example "cinema/movie/proto/example"
+	"github.com/micro/go-micro/broker"
+	"github.com/micro/go-micro/cmd"
 )
 
 func main() {
@@ -16,20 +14,21 @@ func main() {
 		micro.Version("latest"),
 	)
 
+	if err := cmd.Init(); err != nil {
+		log.Fatalf("init cmd error: %v", err)
+	}
 	// Initialise service
 	service.Init()
 
-	// Register Handler
-	example.RegisterExampleHandler(service.Server(), new(handler.Example))
+	if err := broker.Init(); err != nil {
+		log.Fatalf("Broker Init error: %v", err)
+	}
 
-	// Register Struct as Subscriber
-	micro.RegisterSubscriber("com.cinema.srv.movie", service.Server(), new(subscriber.Example))
-
-	// Register Function as Subscriber
-	micro.RegisterSubscriber("com.cinema.srv.movie", service.Server(), subscriber.Handler)
-
+	if err := broker.Connect(); err != nil {
+		log.Fatalf("Broker Connect error: %v", err)
+	}
 	// Run service
 	if err := service.Run(); err != nil {
-		log.Fatal(err)
+		log.Fatalf("run movie service error: %v", err)
 	}
 }
