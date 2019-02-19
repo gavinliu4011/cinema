@@ -11,7 +11,7 @@ import (
 func main() {
 	// 创建 micro 服务
 	service := web.NewService(
-		web.Name("go.micro.api.greeter"),
+		web.Name("go.micro.api.cinema"),
 	)
 	_ = service.Init()
 	// 创建 gin 路由
