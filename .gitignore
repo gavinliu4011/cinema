@@ -12,3 +12,7 @@
 *.out
 
 .idea
+api/api
+movie/movie
+projection/projection
+user/user
