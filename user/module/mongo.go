@@ -2,9 +2,11 @@ package module
 
 import (
 	"context"
-	"github.com/mongodb/mongo-go-driver/mongo"
 	"log"
 	"os"
+
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 var DB *mongo.Database
@@ -14,7 +16,7 @@ func init() {
 	if mongodbAddr == "" {
 		mongodbAddr = "mongodb://127.0.0.1:27017"
 	}
-	client, err := mongo.Connect(context.Background(), mongodbAddr)
+	client, err := mongo.Connect(context.Background(), options.Client().ApplyURI(mongodbAddr))
 	if err != nil {
 		log.Fatalf("connect mongo error: %v", err)
 	}
